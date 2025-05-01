@@ -1,0 +1,79 @@
+openapi: 3.1.0
+info:
+  title: TasteAPI
+  version: 1.0.0
+  description: API to search recipes, retrieve recipe details, and generate shopping lists.
+servers:
+   url: https://fantastic-goggles-qr38.onrender.com
+paths:
+  /upload_recipe:
+    post:
+      summary: Upload a new recipe
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipe'
+      responses:
+        '200':
+          description: Successful upload
+  /search_recipes:
+    get:
+      summary: Search for recipes by ingredient and cook time
+      parameters:
+        - name: ingredient
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: max_cook_time
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of recipes
+  /get_recipe:
+    get:
+      summary: Get a full recipe by ID
+      parameters:
+        - name: recipe_id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Recipe detail
+components:
+  schemas:
+    Recipe:
+      type: object
+      properties:
+        name:
+          type: string
+        ingredients:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              amount:
+                type: number
+              unit:
+                type: string
+        instructions:
+          type: array
+          items:
+            type: string
+        cook_time_minutes:
+          type: integer
+        cuisine:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
